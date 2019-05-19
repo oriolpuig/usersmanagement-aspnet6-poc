@@ -158,6 +158,16 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UsersManagement.Crosscutting\UsersManagement.Crosscutting.csproj">
+      <Project>{953462B6-5AB9-4CD5-A711-9796D16CD8AE}</Project>
+      <Name>UsersManagement.Crosscutting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UsersManagement.ServiceLibrary.Common\UsersManagement.ServiceLibrary.Common.csproj">
+      <Project>{F844C195-A153-4183-AFC6-D4060FA9F436}</Project>
+      <Name>UsersManagement.ServiceLibrary.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
