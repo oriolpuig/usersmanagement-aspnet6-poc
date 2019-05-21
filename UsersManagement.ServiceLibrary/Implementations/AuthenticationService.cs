@@ -23,7 +23,7 @@ namespace UsersManagement.ServiceLibrary.Implementations
             if (user.Password == password) {
                 return user.ToUserDto();
             }
-            throw new System.NotImplementedException();
+            return null;
         }
 
         public Task LogoutAsync(string username)

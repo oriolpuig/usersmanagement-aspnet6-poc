@@ -43,6 +43,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.9.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.9.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.DynamicData" />
@@ -123,6 +129,7 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\IoCConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -162,6 +169,10 @@
     <ProjectReference Include="..\UsersManagement.Crosscutting\UsersManagement.Crosscutting.csproj">
       <Project>{953462B6-5AB9-4CD5-A711-9796D16CD8AE}</Project>
       <Name>UsersManagement.Crosscutting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UsersManagement.IoC\UsersManagement.IoC.csproj">
+      <Project>{45E24F8D-56E3-4421-BB31-E2168C70F7FF}</Project>
+      <Name>UsersManagement.IoC</Name>
     </ProjectReference>
     <ProjectReference Include="..\UsersManagement.ServiceLibrary.Common\UsersManagement.ServiceLibrary.Common.csproj">
       <Project>{F844C195-A153-4183-AFC6-D4060FA9F436}</Project>

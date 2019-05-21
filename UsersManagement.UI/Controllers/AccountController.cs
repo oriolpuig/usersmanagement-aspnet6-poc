@@ -44,7 +44,6 @@ namespace UsersManagement.UI.Controllers
             }
             catch (Exception error)
             {
-
                 throw;
             }
 
