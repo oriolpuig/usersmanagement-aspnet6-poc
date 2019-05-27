@@ -5,19 +5,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UsersManagement.ServiceLibrary.Entities
 {
-    public class User
+    public class Role
     {
-        public User()
+        public Role()
         {
-            this.Roles = new HashSet<Role>();
+            this.Users = new HashSet<User>();
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         [Required]
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Name { get; set; }
 
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

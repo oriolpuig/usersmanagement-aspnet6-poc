@@ -12,7 +12,7 @@ namespace UsersManagement.ServiceLibrary.Common.Extensions
                 {
                     Id = source.Id,
                     Username = source.Username,
-                    Password = source.Password
+                    Password = source.Password,
                 };
             }
             return result;
