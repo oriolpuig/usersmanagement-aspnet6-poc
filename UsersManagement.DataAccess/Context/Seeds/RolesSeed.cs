@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Migrations;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UsersManagement.ServiceLibrary.Entities;
 
 namespace UsersManagement.DataAccess.Context.Seeds
 {
@@ -20,10 +16,13 @@ namespace UsersManagement.DataAccess.Context.Seeds
 
         private static void AddNewRole(MyContext context, string roleName)
         {
-            context.Roles.AddOrUpdate(x => x.Name, new Role
+            if (!context.Roles.Any(r => r.Name == roleName))
             {
-                Name = roleName
-            });
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = roleName };
+                manager.Create(role);
+            }
         }
     }
 }

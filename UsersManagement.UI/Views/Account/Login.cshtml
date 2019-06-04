@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = Model.RedirectUrl }, FormMethod.Post, new { role = "form" }))
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = Model?.RedirectUrl }, FormMethod.Post, new { role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(x => x.RedirectUrl)

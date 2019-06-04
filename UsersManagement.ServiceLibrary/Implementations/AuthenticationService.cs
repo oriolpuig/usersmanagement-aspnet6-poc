@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UsersManagement.Common.Repositories;
 using UsersManagement.ServiceLibrary.Common.Contracts;
-using UsersManagement.ServiceLibrary.Common.Dtos;
-using UsersManagement.ServiceLibrary.Common.Extensions;
 
 namespace UsersManagement.ServiceLibrary.Implementations
 {
@@ -16,14 +17,13 @@ namespace UsersManagement.ServiceLibrary.Implementations
             _userRepository = userRepository ?? throw new ArgumentNullException($"{nameof(_userRepository)} is null");
         }
 
-        public async Task<UserDto> LoginAsync(string username, string password)
+        public async Task<ClaimsIdentity> LoginAsync(string username, string password)
         {
-            var user = await _userRepository.GetByUsernameAsync(username);
-            if (user == null) return null;
-            if (user.Password == password) {
-                return user.ToUserDto();
-            }
-            return null;
+            var userStore = new UserStore<IdentityUser>();
+            var userManager = new UserManager<IdentityUser>(userStore);
+            var user = await userManager.FindAsync(username, password);
+            var userIdentity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            return userIdentity;
         }
 
         public Task LogoutAsync(string username)
