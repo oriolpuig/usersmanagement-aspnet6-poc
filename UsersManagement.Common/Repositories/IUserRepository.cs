@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using UsersManagement.ServiceLibrary.Entities;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace UsersManagement.Common.Repositories
 {
     public interface IUserRepository
     {
-        Task<User> GetByUsernameAsync(string email);
+        Task<IdentityUser> GetByUsernameAsync(string email);
     }
 }

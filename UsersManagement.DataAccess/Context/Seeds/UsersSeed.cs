@@ -1,6 +1,6 @@
-﻿using System.Data.Entity.Migrations;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System.Linq;
-using UsersManagement.ServiceLibrary.Entities;
 
 namespace UsersManagement.DataAccess.Context.Seeds
 {
@@ -16,11 +16,19 @@ namespace UsersManagement.DataAccess.Context.Seeds
 
         private static void AddNewUser(MyContext context, string username, string password, string roleName = "Admin")
         {
-            var user = new User { Username = username, Password = password };
-            var role = context.Roles.FirstOrDefault(r => r.Name == roleName);
-            if (role != null) user.Roles.Add(role);
+            if (!context.Users.Any(u => u.UserName == username))
+            {
+                var passwordHash = new PasswordHasher();
+                var store = new UserStore<IdentityUser>();
+                var manager = new UserManager<IdentityUser>(store);
+                var user = new IdentityUser { UserName = username, PasswordHash = passwordHash.HashPassword(password) };
 
-            context.Users.AddOrUpdate(x => x.Username, user);
+                var isUserCreated = manager.Create(user);
+                if (isUserCreated.Succeeded)
+                {
+                    manager.AddToRole(user.Id, roleName);
+                }
+            }
         }
     }
 }
