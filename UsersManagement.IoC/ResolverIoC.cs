@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using UsersManagement.Common.Repositories;
 using UsersManagement.DataAccess.Repositories;
 using UsersManagement.ServiceLibrary.Common.Contracts;
@@ -27,6 +26,7 @@ namespace UsersManagement.IoC
         private void RegisterServiceLayer(ContainerBuilder builder)
         {
             builder.RegisterType<AuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
         }
     }
 }

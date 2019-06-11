@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IAuthenticationService.cs" />
+    <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Extensions\UserDtoExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
