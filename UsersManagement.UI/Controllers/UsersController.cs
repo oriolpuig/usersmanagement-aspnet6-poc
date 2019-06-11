@@ -18,7 +18,7 @@ namespace UsersManagement.UI.Controllers
         {
             try
             {
-                return Ok();
+                return Ok(_userService.GetAllUsers());
             }
             catch (Exception ex)
             {
