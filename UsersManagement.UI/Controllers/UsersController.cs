@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Http;
 using UsersManagement.ServiceLibrary.Common.Contracts;
+using UsersManagement.ServiceLibrary.Common.Dtos;
 
 namespace UsersManagement.UI.Controllers
 {
@@ -27,11 +28,11 @@ namespace UsersManagement.UI.Controllers
         }
 
         // GET: api/Users/5
-        public IHttpActionResult Get(int id)
+        public IHttpActionResult Get(string id)
         {
             try
             {
-                return Ok();
+                return Ok(_userService.GetUser(id));
             }
             catch (Exception ex)
             {
@@ -40,11 +41,11 @@ namespace UsersManagement.UI.Controllers
         }
 
         // POST: api/Users
-        public IHttpActionResult Post([FromBody]string value)
+        public IHttpActionResult Post(UserDto newUser)
         {
             try
             {
-                return Ok();
+                return Ok(_userService.CreateUser(newUser));
             }
             catch (Exception ex)
             {
@@ -53,11 +54,11 @@ namespace UsersManagement.UI.Controllers
         }
 
         // PUT: api/Users/5
-        public IHttpActionResult Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(string id, UserDto userToUpdate)
         {
             try
             {
-                return Ok();
+                return Ok(_userService.UpdateUser(id, userToUpdate));
             }
             catch (Exception ex)
             {
@@ -66,11 +67,11 @@ namespace UsersManagement.UI.Controllers
         }
 
         // DELETE: api/Users/5
-        public IHttpActionResult Delete(int id)
+        public IHttpActionResult Delete(string id)
         {
             try
             {
-                return Ok();
+                return Ok(_userService.DeleteUser(id));
             }
             catch (Exception ex)
             {
