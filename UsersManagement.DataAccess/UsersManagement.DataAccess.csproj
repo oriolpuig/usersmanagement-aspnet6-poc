@@ -78,6 +78,7 @@
     <Compile Include="Context\MyContext.cs" />
     <Compile Include="Context\Seeds\RolesSeed.cs" />
     <Compile Include="Context\Seeds\UsersSeed.cs" />
+    <Compile Include="Managers\ApplicationRoleManager.cs" />
     <Compile Include="Managers\ApplicationUserManager.cs" />
     <Compile Include="Migrations\201906041103502_Initial_Migration.cs" />
     <Compile Include="Migrations\201906041103502_Initial_Migration.Designer.cs">

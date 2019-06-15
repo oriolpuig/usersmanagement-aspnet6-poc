@@ -30,11 +30,13 @@ namespace UsersManagement.IoC
             var x = new MyContext();
             builder.Register<MyContext>(c => x);
             builder.Register<UserStore<IdentityUser>>(c => new UserStore<IdentityUser>(x)).AsImplementedInterfaces();
+            builder.Register<RoleStore<IdentityRole>>(c => new RoleStore<IdentityRole>(x)).AsImplementedInterfaces();
             builder.Register<IdentityFactoryOptions<ApplicationUserManager>>(c => new IdentityFactoryOptions<ApplicationUserManager>()
             {
                 DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("ApplicationName")
             });
             builder.RegisterType<ApplicationUserManager>();
+            builder.RegisterType<ApplicationRoleManager>();
         }
 
         private void RegisterServiceLayer(ContainerBuilder builder)
