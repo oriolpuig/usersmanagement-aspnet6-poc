@@ -84,6 +84,10 @@
       <Project>{6EF81D58-2A8D-474F-B7C4-DFC63ED734F3}</Project>
       <Name>UsersManagement.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UsersManagement.DataAccess\UsersManagement.DataAccess.csproj">
+      <Project>{098048F8-6255-407A-9A3B-1D851607DECF}</Project>
+      <Name>UsersManagement.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UsersManagement.ServiceLibrary.Common\UsersManagement.ServiceLibrary.Common.csproj">
       <Project>{F844C195-A153-4183-AFC6-D4060FA9F436}</Project>
       <Name>UsersManagement.ServiceLibrary.Common</Name>
