@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace UsersManagement.ServiceLibrary.Common.Dtos
+namespace UsersManagement.UI.Models.Users
 {
-    public class UserDto
+    public class UserViewModel
     {
         public string Id { get; set; }
         public string Username { get; set; }

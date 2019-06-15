@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
+using System.Linq;
 using UsersManagement.ServiceLibrary.Common.Dtos;
 
 namespace UsersManagement.ServiceLibrary.Common.Extensions
@@ -17,7 +19,7 @@ namespace UsersManagement.ServiceLibrary.Common.Extensions
             };
         }
 
-        public static UserDto ToUserDto(this IdentityUser source)
+        public static UserDto ToUserDto(this IdentityUser source, IEnumerable<IdentityRole> roles)
         {
             UserDto result = null;
             if (source != null)
@@ -27,9 +29,17 @@ namespace UsersManagement.ServiceLibrary.Common.Extensions
                     Id = source.Id,
                     Username = source.UserName,
                     Password = source.PasswordHash,
+                    Roles = source.Roles.Select(r => roles.FirstOrDefault(ir => ir.Id == r.RoleId).Name).ToList()
                 };
             }
             return result;
+        }
+
+
+        public static IEnumerable<UserDto> ToUserListDto(this IEnumerable<IdentityUser> source, IEnumerable<IdentityRole> roles)
+        {
+            if (source == null) return new List<UserDto>();
+            return source.Select(u => u.ToUserDto(roles));
         }
     }
 }

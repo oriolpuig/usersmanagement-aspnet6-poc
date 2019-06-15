@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using UsersManagement.ServiceLibrary.Common.Contracts;
@@ -9,19 +10,24 @@ namespace UsersManagement.ServiceLibrary.Implementations
 {
     public class UserService : IUserService
     {
-        public IEnumerable<IdentityUser> GetAllUsers()
+        public IEnumerable<UserDto> GetAllUsers()
         {
+            var roleStore = new RoleStore<IdentityRole>();
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
             var userStore = new UserStore<IdentityUser>();
             var userManager = new UserManager<IdentityUser>(userStore);
 
-            return userManager.Users;
+            return userManager.Users.ToUserListDto(roleManager.Roles);
         }
 
-        public IdentityUser GetUser(string id)
+        public UserDto GetUser(string id)
         {
+            var roleStore = new RoleStore<IdentityRole>();
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
             var userStore = new UserStore<IdentityUser>();
             var userManager = new UserManager<IdentityUser>(userStore);
-            return userManager.FindById(id);
+            var user = userManager.FindById(id);
+            return user.ToUserDto(roleManager.Roles);
         }
 
         public IdentityUser CreateUser(UserDto newUser)

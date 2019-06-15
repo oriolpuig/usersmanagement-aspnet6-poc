@@ -2,6 +2,7 @@
 using System.Web.Http;
 using UsersManagement.ServiceLibrary.Common.Contracts;
 using UsersManagement.ServiceLibrary.Common.Dtos;
+using UsersManagement.UI.Models.Extensions;
 
 namespace UsersManagement.UI.Controllers
 {
@@ -19,7 +20,7 @@ namespace UsersManagement.UI.Controllers
         {
             try
             {
-                return Ok(_userService.GetAllUsers());
+                return Ok(_userService.GetAllUsers().ToUserListViewModel());
             }
             catch (Exception ex)
             {
@@ -32,7 +33,7 @@ namespace UsersManagement.UI.Controllers
         {
             try
             {
-                return Ok(_userService.GetUser(id));
+                return Ok(_userService.GetUser(id).ToUserViewModel());
             }
             catch (Exception ex)
             {
