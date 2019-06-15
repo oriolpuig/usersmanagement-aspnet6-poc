@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Http;
 using UsersManagement.ServiceLibrary.Common.Contracts;
-using UsersManagement.ServiceLibrary.Common.Dtos;
 using UsersManagement.UI.Models.Extensions;
 using UsersManagement.UI.Models.Users;
 
@@ -29,7 +28,7 @@ namespace UsersManagement.UI.Controllers
             }
         }
 
-        // GET: api/Users/5
+        //GET: api/Users/5
         public IHttpActionResult Get(string id)
         {
             try
