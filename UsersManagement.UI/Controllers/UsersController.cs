@@ -3,6 +3,7 @@ using System.Web.Http;
 using UsersManagement.ServiceLibrary.Common.Contracts;
 using UsersManagement.ServiceLibrary.Common.Dtos;
 using UsersManagement.UI.Models.Extensions;
+using UsersManagement.UI.Models.Users;
 
 namespace UsersManagement.UI.Controllers
 {
@@ -42,11 +43,11 @@ namespace UsersManagement.UI.Controllers
         }
 
         // POST: api/Users
-        public IHttpActionResult Post(UserDto newUser)
+        public IHttpActionResult Post(UserViewModel newUser)
         {
             try
             {
-                return Ok(_userService.CreateUser(newUser));
+                return Ok(_userService.CreateUser(newUser.ToUserDto()));
             }
             catch (Exception ex)
             {
@@ -55,11 +56,14 @@ namespace UsersManagement.UI.Controllers
         }
 
         // PUT: api/Users/5
-        public IHttpActionResult Put(string id, UserDto userToUpdate)
+        public IHttpActionResult Put(string id, UserViewModel userToUpdate)
         {
             try
             {
-                return Ok(_userService.UpdateUser(id, userToUpdate));
+                if (_userService.UpdateUser(id, userToUpdate.ToUserDto()))
+                    return Ok();
+                else
+                    throw new Exception("User not saved.");
             }
             catch (Exception ex)
             {
@@ -72,7 +76,10 @@ namespace UsersManagement.UI.Controllers
         {
             try
             {
-                return Ok(_userService.DeleteUser(id));
+                if (_userService.DeleteUser(id))
+                    return Ok();
+                else
+                    throw new Exception("User not deleted.");
             }
             catch (Exception ex)
             {
