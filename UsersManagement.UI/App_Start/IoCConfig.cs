@@ -4,7 +4,9 @@ using Autofac.Integration.WebApi;
 using System.Web.Http;
 using System.Web.Mvc;
 using UsersManagement.IoC;
+using UsersManagement.ServiceLibrary.Common.Contracts;
 using UsersManagement.UI.Controllers;
+using UsersManagement.UI.Filters;
 
 namespace UsersManagement.UI.App_Start
 {
@@ -18,6 +20,7 @@ namespace UsersManagement.UI.App_Start
             var build = container.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(build));
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(build);
+            ServiceLocator.AuthenticationService = DependencyResolver.Current.GetService(typeof(IAuthenticationService)) as IAuthenticationService;
         }
         
         private static void RegisterControllerLayer(ContainerBuilder builder)
