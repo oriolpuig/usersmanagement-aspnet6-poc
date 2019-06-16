@@ -17,8 +17,6 @@ namespace UsersManagement.UI.Filters
 
     public class BasicAuthenticationAttribute : AuthorizationFilterAttribute
     {
-        public string BasicRealm { get; set; }
-
         public BasicAuthenticationAttribute()
             : this(ServiceLocator.UserService)
         {
@@ -27,9 +25,11 @@ namespace UsersManagement.UI.Filters
         public BasicAuthenticationAttribute(IUserService userService)
         {
             UserService = userService;
+            Role = "";
         }
 
         public IUserService UserService { get; set; }
+        public string Role { get; set; }
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
@@ -62,9 +62,10 @@ namespace UsersManagement.UI.Filters
         public bool IsAuthorizedUser(string username, string password)
         {
             var userDto = this.UserService.GetUserByUsernameAndPassword(username, password);
+            if (userDto == null) return false;
             return IsUserInRole(userDto.Roles);
         }
 
-        private static bool IsUserInRole(List<string> roles) => roles.Contains("Admin");
+        private bool IsUserInRole(List<string> roles) => roles.Contains(this.Role);
     }
 }

@@ -7,6 +7,7 @@ using UsersManagement.UI.Models.Users;
 
 namespace UsersManagement.UI.Controllers
 {
+    [BasicAuthentication(Role = "Admin")]
     public class UsersController : ApiController
     {
         private readonly IUserService _userService;
@@ -16,7 +17,6 @@ namespace UsersManagement.UI.Controllers
             this._userService = userService ?? throw new ArgumentNullException($"{nameof(_userService)} is null");
         }
 
-        [BasicAuthentication]
         // GET: api/Users
         public IHttpActionResult Get()
         {
@@ -30,7 +30,6 @@ namespace UsersManagement.UI.Controllers
             }
         }
 
-        [BasicAuthentication]
         //GET: api/Users/5
         public IHttpActionResult Get(string id)
         {
@@ -44,7 +43,6 @@ namespace UsersManagement.UI.Controllers
             }
         }
 
-        [BasicAuthentication]
         // POST: api/Users
         public IHttpActionResult Post(UserViewModel newUser)
         {
@@ -58,7 +56,6 @@ namespace UsersManagement.UI.Controllers
             }
         }
 
-        [BasicAuthentication]
         // PUT: api/Users/5
         public IHttpActionResult Put(string id, UserViewModel userToUpdate)
         {
@@ -75,7 +72,6 @@ namespace UsersManagement.UI.Controllers
             }
         }
 
-        [BasicAuthentication]
         // DELETE: api/Users/5
         public IHttpActionResult Delete(string id)
         {
