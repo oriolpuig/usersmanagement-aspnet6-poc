@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Web.Http;
 using UsersManagement.ServiceLibrary.Common.Contracts;
+using UsersManagement.UI.Filters;
 using UsersManagement.UI.Models.Extensions;
 using UsersManagement.UI.Models.Users;
 
 namespace UsersManagement.UI.Controllers
 {
+    [BasicAuthentication(Role = "Admin")]
     public class UsersController : ApiController
     {
         private readonly IUserService _userService;
