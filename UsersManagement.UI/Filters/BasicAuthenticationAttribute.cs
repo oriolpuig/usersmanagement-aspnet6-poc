@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
@@ -11,7 +12,7 @@ namespace UsersManagement.UI.Filters
 {
     public static class ServiceLocator
     {
-        public static IAuthenticationService AuthenticationService { get; set; }
+        public static IUserService UserService { get; set; }
     }
 
     public class BasicAuthenticationAttribute : AuthorizationFilterAttribute
@@ -19,16 +20,16 @@ namespace UsersManagement.UI.Filters
         public string BasicRealm { get; set; }
 
         public BasicAuthenticationAttribute()
-            : this(ServiceLocator.AuthenticationService)
+            : this(ServiceLocator.UserService)
         {
         }
 
-        public BasicAuthenticationAttribute(IAuthenticationService authenticationService)
+        public BasicAuthenticationAttribute(IUserService userService)
         {
-            AuthenticationService = authenticationService;
+            UserService = userService;
         }
 
-        public IAuthenticationService AuthenticationService { get; set; }
+        public IUserService UserService { get; set; }
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
@@ -60,11 +61,10 @@ namespace UsersManagement.UI.Filters
 
         public bool IsAuthorizedUser(string username, string password)
         {
-            var dbUser = this.AuthenticationService.Login(username, password);
-            if (dbUser != null)
-                return true;
-            else
-                return false;
+            var userDto = this.UserService.GetUserByUsernameAndPassword(username, password);
+            return IsUserInRole(userDto.Roles);
         }
+
+        private static bool IsUserInRole(List<string> roles) => roles.Contains("Admin");
     }
 }

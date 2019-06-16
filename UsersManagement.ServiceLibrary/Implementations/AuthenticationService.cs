@@ -1,43 +1,27 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using UsersManagement.Common.Repositories;
+using UsersManagement.DataAccess.Managers;
 using UsersManagement.ServiceLibrary.Common.Contracts;
 
 namespace UsersManagement.ServiceLibrary.Implementations
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly ApplicationUserManager _applicationUserManager;
 
-        public AuthenticationService(IUserRepository userRepository)
+        public AuthenticationService(ApplicationUserManager applicationUserManager, IUserRepository userRepository)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException($"{nameof(_userRepository)} is null");
-        }
-
-        public ClaimsIdentity Login(string username, string password)
-        {
-            var userStore = new UserStore<IdentityUser>();
-            var userManager = new UserManager<IdentityUser>(userStore);
-            var user = userManager.Find(username, password);
-            var userIdentity = userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-            return userIdentity;
+            _applicationUserManager = applicationUserManager ?? throw new ArgumentNullException($"{nameof(_applicationUserManager)} is null");
         }
 
         public async Task<ClaimsIdentity> LoginAsync(string username, string password)
         {
-            var userStore = new UserStore<IdentityUser>();
-            var userManager = new UserManager<IdentityUser>(userStore);
-            var user = await userManager.FindAsync(username, password);
-            var userIdentity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            var user = await _applicationUserManager.FindAsync(username, password);
+            var userIdentity = await _applicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return userIdentity;
-        }
-
-        public Task LogoutAsync(string username)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

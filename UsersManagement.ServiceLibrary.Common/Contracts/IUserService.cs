@@ -8,6 +8,7 @@ namespace UsersManagement.ServiceLibrary.Common.Contracts
     {
         IEnumerable<UserDto> GetAllUsers();
         UserDto GetUser(string id);
+        UserDto GetUserByUsernameAndPassword(string userName, string password);
         UserDto CreateUser(UserDto newUser);
         bool UpdateUser(string id, UserDto userToUpdate);
         bool DeleteUser(string id);

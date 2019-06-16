@@ -33,6 +33,13 @@ namespace UsersManagement.ServiceLibrary.Implementations
             return user.ToUserDto(roles);
         }
 
+        public UserDto GetUserByUsernameAndPassword(string userName, string password)
+        {
+            var user = _applicationUserManager.Find(userName, password);
+            var roles = _applicationRoleManager.Roles;
+            return user.ToUserDto(roles);
+        }
+
         public UserDto CreateUser(UserDto newUser)
         {
             var newUserIdentity = newUser.ToEntity();

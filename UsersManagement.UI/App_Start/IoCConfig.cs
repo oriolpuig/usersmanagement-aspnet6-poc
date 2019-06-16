@@ -20,7 +20,7 @@ namespace UsersManagement.UI.App_Start
             var build = container.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(build));
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(build);
-            ServiceLocator.AuthenticationService = DependencyResolver.Current.GetService(typeof(IAuthenticationService)) as IAuthenticationService;
+            ServiceLocator.UserService = DependencyResolver.Current.GetService(typeof(IUserService)) as IUserService;
         }
         
         private static void RegisterControllerLayer(ContainerBuilder builder)
