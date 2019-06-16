@@ -2,6 +2,7 @@
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using System.Web;
 
 [assembly: OwinStartup(typeof(UsersManagement.UI.Startup))]
 
@@ -15,8 +16,23 @@ namespace UsersManagement.UI
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login")
+                LoginPath = new PathString("/Account/Login"),
+                Provider = new CookieAuthenticationProvider()
+                {
+                    OnApplyRedirect = ctx =>
+                    {
+                        if (!IsApiRequest(ctx.Request)) {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+                    }
+                }
             });
+        }
+
+        private static bool IsApiRequest(IOwinRequest request)
+        {
+            string apiPath = VirtualPathUtility.ToAbsolute("~/api/");
+            return request.Uri.LocalPath.StartsWith(apiPath);
         }
     }
 }

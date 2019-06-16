@@ -17,6 +17,15 @@ namespace UsersManagement.ServiceLibrary.Implementations
             _userRepository = userRepository ?? throw new ArgumentNullException($"{nameof(_userRepository)} is null");
         }
 
+        public ClaimsIdentity Login(string username, string password)
+        {
+            var userStore = new UserStore<IdentityUser>();
+            var userManager = new UserManager<IdentityUser>(userStore);
+            var user = userManager.Find(username, password);
+            var userIdentity = userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+            return userIdentity;
+        }
+
         public async Task<ClaimsIdentity> LoginAsync(string username, string password)
         {
             var userStore = new UserStore<IdentityUser>();

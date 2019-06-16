@@ -12,9 +12,9 @@ namespace UsersManagement.UI
         void Application_Start(object sender, EventArgs e)
         {
             AreaRegistration.RegisterAllAreas();
+            IoCConfig.RegisterIoC();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            IoCConfig.RegisterIoC();
         }
     }
 }

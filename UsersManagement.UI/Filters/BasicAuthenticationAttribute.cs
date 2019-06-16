@@ -60,7 +60,7 @@ namespace UsersManagement.UI.Filters
 
         public bool IsAuthorizedUser(string username, string password)
         {
-            var dbUser = this.AuthenticationService.LoginAsync(username, password).Result;
+            var dbUser = this.AuthenticationService.Login(username, password);
             if (dbUser != null)
                 return true;
             else
