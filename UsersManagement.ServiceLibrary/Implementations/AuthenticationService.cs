@@ -1,34 +1,27 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using UsersManagement.Common.Repositories;
+using UsersManagement.DataAccess.Managers;
 using UsersManagement.ServiceLibrary.Common.Contracts;
-using UsersManagement.ServiceLibrary.Common.Dtos;
-using UsersManagement.ServiceLibrary.Common.Extensions;
 
 namespace UsersManagement.ServiceLibrary.Implementations
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly ApplicationUserManager _applicationUserManager;
 
-        public AuthenticationService(IUserRepository userRepository)
+        public AuthenticationService(ApplicationUserManager applicationUserManager, IUserRepository userRepository)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException($"{nameof(_userRepository)} is null");
+            _applicationUserManager = applicationUserManager ?? throw new ArgumentNullException($"{nameof(_applicationUserManager)} is null");
         }
 
-        public async Task<UserDto> LoginAsync(string username, string password)
+        public async Task<ClaimsIdentity> LoginAsync(string username, string password)
         {
-            var user = await _userRepository.GetByUsernameAsync(username);
-            if (user == null) return null;
-            if (user.Password == password) {
-                return user.ToUserDto();
-            }
-            throw new System.NotImplementedException();
-        }
-
-        public Task LogoutAsync(string username)
-        {
-            throw new System.NotImplementedException();
+            var user = await _applicationUserManager.FindAsync(username, password);
+            var userIdentity = await _applicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+            return userIdentity;
         }
     }
 }

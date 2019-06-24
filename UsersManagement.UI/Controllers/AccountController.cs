@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Owin.Security;
+using System;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
-using UsersManagement.Crosscutting.Enums;
-using UsersManagement.Crosscutting.Helpers;
 using UsersManagement.ServiceLibrary.Common.Contracts;
 using UsersManagement.UI.Models.Account;
 
@@ -37,15 +37,19 @@ namespace UsersManagement.UI.Controllers
                 var currentUser = await _authenticationService.LoginAsync(model.Username, model.Password);
                 if (currentUser != null)
                 {
-                    Session["Username"] = currentUser.Username;
-                    Session["Role"] = RolesEnum.Admin.GetDescription();
-                    Session.Timeout = 5;
+                    var authenticationManager = HttpContext.GetOwinContext().Authentication;
+                    authenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = false, ExpiresUtc = DateTimeOffset.Now.AddMinutes(5) }, currentUser);
+                }
+                else
+                {
+                    ModelState.AddModelError("Error", "Invalid credentials");
+                    return View(model);
                 }
             }
             catch (Exception error)
             {
-
-                throw;
+                ModelState.AddModelError("Error", error);
+                return View(model);
             }
 
             if (!string.IsNullOrEmpty(returnUrl))
@@ -53,6 +57,14 @@ namespace UsersManagement.UI.Controllers
                 return Redirect(Url.Content(returnUrl));
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Logout()
+        {
+            var authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut();
+            return RedirectToAction("Login", "Account");
         }
     }
 }
