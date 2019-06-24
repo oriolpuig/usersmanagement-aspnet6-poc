@@ -48,7 +48,10 @@ namespace UsersManagement.UI.Controllers
         {
             try
             {
-                return Ok(_userService.CreateUser(newUser.ToUserDto()));
+                var dto = newUser.ToUserDto();
+                var newUserCreated = _userService.CreateUser(dto);
+                var result = newUserCreated.ToUserViewModel();
+                return Ok(result);
             }
             catch (Exception ex)
             {
