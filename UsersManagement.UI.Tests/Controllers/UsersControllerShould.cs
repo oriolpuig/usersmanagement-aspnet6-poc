@@ -17,7 +17,7 @@ namespace UsersManagement.UI.Tests.Controllers
     public class UsersControllerShould
     {
         private readonly Mock<IUserService> _userServiceMock;
-        private readonly UsersController _usersController;
+        private UsersController _usersController;
 
         private IEnumerable<UserDto> _listOfUsersDtoMock;
         private readonly UserDto _userDtoMock1;
@@ -30,8 +30,20 @@ namespace UsersManagement.UI.Tests.Controllers
             _usersController.Request = new HttpRequestMessage();
             _usersController.Configuration = new HttpConfiguration();
 
-            _userDtoMock1 = new UserDto { Id = Guid.NewGuid().ToString(), Username = "oriol", Password = "oriol", Roles = new List<string> { "Admin" } };
-            _userDtoMock2 = new UserDto { Id = Guid.NewGuid().ToString(), Username = "puig", Password = "puig", Roles = new List<string> { "Admin" } };
+            _userDtoMock1 = new UserDto
+            {
+                Id = Guid.NewGuid().ToString(),
+                Username = "oriol",
+                Password = "oriol",
+                Roles = new List<string> { "Admin" }
+            };
+            _userDtoMock2 = new UserDto
+            {
+                Id = Guid.NewGuid().ToString(),
+                Username = "puig",
+                Password = "puig",
+                Roles = new List<string> { "Admin" }
+            };
             _listOfUsersDtoMock = new List<UserDto> { _userDtoMock1, _userDtoMock2 };
         }
 
@@ -61,41 +73,42 @@ namespace UsersManagement.UI.Tests.Controllers
         public void return_a_new_user_on_POST()
         {
             var newUserVM = new UserViewModel { Username = "test", Password = "test", Roles = new List<string> { "Admin" } };
-            var newUserDto = new UserDto
+            var createdUserDto = new UserDto
             {
+                Id = Guid.NewGuid().ToString(),
                 Username = newUserVM.Username,
                 Password = newUserVM.Password,
                 Roles = newUserVM.Roles
             };
-            var createdUserDto = new UserDto
-            {
-                Id = Guid.NewGuid().ToString(),
-                Username = newUserDto.Username,
-                Password = newUserDto.Password,
-                Roles = newUserDto.Roles
-            };
 
-            _userServiceMock.Setup(u => u.CreateUser(newUserDto)).Returns(createdUserDto);
+            _userServiceMock.Setup(u => u.CreateUser(It.IsAny<UserDto>())).Returns(createdUserDto);
             var response = _usersController.Post(newUserVM) as OkNegotiatedContentResult<UserViewModel>;
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.Content);
             Assert.IsTrue(response.Content.Id == createdUserDto.Id);
-
-            //var newUserVM = new UserViewModel { Username = "test", Password = "test", Roles = new List<string> { "Admin" } };
-            //IHttpActionResult actionResult = _usersController.Post(newUserVM);
-            //var createdResult = actionResult as CreatedAtRouteNegotiatedContentResult<UserViewModel>;
-            //Assert.IsNotNull(createdResult);
-
         }
 
         [TestMethod]
         public void return_a_true_on_UPDATE()
         {
             var userIdToUpdate = Guid.NewGuid().ToString();
-            var userVMToUpdate = new UserViewModel { Id = userIdToUpdate, Username = "test", Password = "test", Roles = new List<string> { "Admin" } };
-            var userToUpdate = new UserDto { Id = userVMToUpdate.Id, Username = userVMToUpdate.Username, Password = userVMToUpdate.Password, Roles = userVMToUpdate.Roles };
-            _userServiceMock.Setup(u => u.UpdateUser(userIdToUpdate, userToUpdate)).Returns(true);
+            var userVMToUpdate = new UserViewModel
+            {
+                Id = userIdToUpdate,
+                Username = "test",
+                Password = "test",
+                Roles = new List<string> { "Admin" }
+            };
+            var userToUpdate = new UserDto
+            {
+                Id = userVMToUpdate.Id,
+                Username = userVMToUpdate.Username,
+                Password = userVMToUpdate.Password,
+                Roles = userVMToUpdate.Roles
+            };
+
+            _userServiceMock.Setup(u => u.UpdateUser(userIdToUpdate, It.IsAny<UserDto>())).Returns(true);
             var response = _usersController.Put(userIdToUpdate, userVMToUpdate) as OkResult;
 
             Assert.IsNotNull(response);
